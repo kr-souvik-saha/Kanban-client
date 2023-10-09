@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./views/Home";
+import SignIn from "./views/SignIn";
+import SignUp from "./views/SignUp";
+import { UserContextProvider } from "./context/UserContext";
+import Protected from "./views/Protected";
+import Profile from "./views/Profile";
+import Logout from "./views/Logout";
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/signup",
+      element: <SignUp></SignUp>,
+    },
+    {
+      path: "/signin",
+      element: <SignIn></SignIn>,
+    },
+    {
+      path: "/profile",
+      element: (
+        <Protected>
+          <Profile></Profile>
+        </Protected>
+      ),
+    },
+    {
+      path: "/logout",
+      element: <Logout></Logout>,
+    },
+    {
+      path: "/",
+      element: (
+        <Protected>
+          <Home></Home>
+        </Protected>
+      ),
+    },
+    {
+      path: "*",
+    },
+  ]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserContextProvider>
+        <div className="Route">
+          <RouterProvider router={router} />
+        </div>
+      </UserContextProvider>
+    </>
   );
 }
 
